@@ -42,6 +42,44 @@ const addLinkDataFromTab = (tabs) => {
   $('#urlInput').val(currentTab.url);
 }
 
+const fs = require('fs') 
+
+function userPreferencesAreEmpty(){
+	var json = JSON.parse('userPreferences.json');
+	if(json.isset == true){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+if(userPreferencesAreEmpty){
+	fs.readFile('Input.txt', 'utf-8', (err, data) => { 
+	    if (err) throw err; 
+	  
+	    document.getElementById("userPreferences").innerHTML = data.toString(); 
+	})
+}
+
+function changeUserPreferences(){
+	fs.readFile('Input.txt', 'utf-8', (err, data) => { 
+	    if (err) throw err; 
+	  
+	    document.getElementById("userPreferences").innerHTML = data.toString(); 
+	})
+	var json = JSON.parse('userPreferences.json');
+
+}
+
+function searchToSInJSON(url){
+	$(jQuery.parseJSON(JSON.stringify(dataArray))).each(function() {  
+	    if (this.url == url) {
+	    	return this;
+	    }
+  });
+}
+
 // To enable cross-browser use you need to see if this is Chrome or not
 if(chrome) {
   chrome.tabs.query(
