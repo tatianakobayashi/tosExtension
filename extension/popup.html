@@ -7,9 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/themes/flatly/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/clipboard-polyfill.js"></script>
     <script src="js/lib/bootstrap.bundle.js"></script>
+
   </head>
 
   <body>
@@ -21,12 +23,12 @@
             <h3>Termos de serviço</h3>
           </p>
 
-          <p>
+          <!-- <p>
             <div id="alert" class="alert alert-dismissible alert-primary" role="alert">
               <button type="button" class="close">&times;</button>
               <span id="alertText"></span>
             </div>
-          </p>
+          </p> -->
 
           <p>
             <a href="https://github.com/ryandav/template-browser-extension"
@@ -36,35 +38,28 @@
           </p>
 
           
-          
+          <div id="userPreferences">
+
+          </div>
           <!--  -->
           
+          
           <form action="javascript:changeUserPreferences()">
-            <button type="submit" class="btn btn-primary">Editar Preferências</button>
+            <button type="submit" class="btn btn-primary" id="editPreferences">Editar Preferências</button>
           </form>
 
-          <h3 id="tabTitle" class="lead">Tab title</h3>
-          <div>
-            informações sobre os termos do site
-          </div>
 
-          <h3 class="lead">Url</h3>
-          <div class="input-group mb-3">
-            <input id="urlInput" type="text"
-            class="form-control"
-            data-container="body"
-            data-toggle="popover"
-            data-placement="top"
-            data-content="Copied Url to Clipboard"
-            >
-            <div class="input-group-append">
-              <button id="urlCopyButton"
-                class="btn btn-primary"
-                type="button">
-                Copy
-              </button>
+          <h3 id="tabTitle" class="lead">Tab title</h3>
+            <div id="tabInformation">
+
             </div>
-          </div>
+            
+            <div>
+              Informações sobre os termos do site
+              <div id="teste">
+
+              </div>
+            </div>
 
         </div> <!-- end col -->
       </div> <!-- end row -->

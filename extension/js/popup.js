@@ -1,33 +1,55 @@
-// Link Formatter js
-
 // hide the alert that will be triggered if there is a failure to copy text
 $('#alert').hide()
 
 // to close the alert
 $("#alert").click(() => { $('#alert').hide() });
 
-// Copy button events, obtains the input id from amending the button id
-$("button").click((event) => {
-  let inputId = "#" + event.target.id.replace("CopyButton", "Input")
-  copyInputToClipboard(inputId)
-});
+function parseUrl(url){
+  var parsed_url = url.replace('http://','').replace('https://','').split(/[/?#]/);
+  console.log(parsed_url[0]);
 
-const copyInputToClipboard = (elementId) => {
-  let data = $(elementId).val()
-  let dt = new clipboard.DT();
-  dt.setData("text/plain", data);
-  clipboard.write(dt)
-  .then(() => {
-    // confirm successful copy
-    $('[data-toggle="popover"]').popover('disable').popover('hide')
-    $(elementId).popover('enable').popover('show')
-    setTimeout(() => { $(elementId).popover('disable').popover('hide') }, 2000)
-    $(elementId).select()
-  })
-  .catch((error) => {
-    alertError(error, "Error occurred when trying to copy to clipboard")
-  })
+  parsed_url = parsed_url[0];
+
+  var remove = ["www.", ".com"];
+  
+  remove.forEach(element => {
+    parsed_url = parsed_url.replace(element, "");  
+  });
+
+  parsed_url = parsed_url.split(".");
+
+  return parsed_url;
 }
+
+function getInfoFromAPI(site){
+	var req = $.getJSON("https://tosdr.org/api/1/service/" + site +".json").done(function(data) {
+	  return JSON.parse(data);
+	});
+
+	return JSON.parse(req.responseText);
+}
+
+function ratingString(rating){
+	if(rating == false){
+		return "Sem classificação";
+	}
+	else{
+		return rating;
+	}
+}
+
+function setInfoInHTML(data){
+	var html = document.getId("info");// getFromId
+
+	var innerHtml = "<div class=\"name\">" + data.name + "</div>";
+	var innerHtml = innerHtml + "<div class=\"rating\"><span class=\"tosdrLabel\">Classificação: </span>" + ratingString(data.rated) + "</div>";
+
+  // TODO
+
+	html.innerHtml = innerHtml;
+}
+
+const tosdr_api = "https://tosdr.org/api/1/service/";
 
 const alertError = (error, message) => {
   console.log(message)
@@ -36,16 +58,52 @@ const alertError = (error, message) => {
   $('#alert').show()
 }
 
+const getJsonFromAPI = (obj) => {
+  var json = $.getJSON(tosdr_api + obj + ".json").done(function(data) {
+    return JSON.stringify(data);
+  });
+  console.log(json);
+  return json;
+  /*
+  if (Array.isArray(obj)){
+    obj.forEach(element => {
+      var json = $.getJSON(tosdr_api + url + ".json").done(function(data) {
+        return console.log(JSON.stringify(data));
+      });
+
+      if(json != null){
+        return json;
+      }
+    });
+  }
+  else{
+    
+  }*/
+}
+
 const addLinkDataFromTab = (tabs) => {
   currentTab = tabs[0]
   $('#tabTitle').text(currentTab.title);
-  $('#urlInput').val(currentTab.url);
+  // $('#urlInput').val(currentTab.url);
+  
+  var url = parseUrl(currentTab.url);
+  
+  // document.getElementById("userPreferences").innerHTML = currentTab.title + " " + currentTab.url;
+  document.getElementById("tabInformation").innerHTML = url; 
+
+  // console.log(parseUrl( currentTab.url));
+
+  document.getElementById("teste").innerHTML = getJsonFromAPI(url).stringify;
+  
 }
 
-const fs = require('fs') 
 
+
+// const fs = require('fs') 
+
+/*
 function userPreferencesAreEmpty(){
-	var json = JSON.parse('userPreferences.json');
+  var json = JSON.parse($.getJSON('../data/userPreferences.json', function(data){return data;}));
 	if(json.isset == true){
 		return false;
 	}
@@ -54,20 +112,9 @@ function userPreferencesAreEmpty(){
 	}
 }
 
-if(userPreferencesAreEmpty){
-	fs.readFile('Input.txt', 'utf-8', (err, data) => { 
-	    if (err) throw err; 
-	  
-	    document.getElementById("userPreferences").innerHTML = data.toString(); 
-	})
-}
-
 function changeUserPreferences(){
-	fs.readFile('Input.txt', 'utf-8', (err, data) => { 
-	    if (err) throw err; 
-	  
-	    document.getElementById("userPreferences").innerHTML = data.toString(); 
-	})
+  var text = readFile('../Input.txt');
+  document.getElementById("userPreferences").innerHTML = text;
 	var json = JSON.parse('userPreferences.json');
 
 }
@@ -79,6 +126,7 @@ function searchToSInJSON(url){
 	    }
   });
 }
+*/
 
 // To enable cross-browser use you need to see if this is Chrome or not
 if(chrome) {
@@ -94,3 +142,13 @@ if(chrome) {
   // This enables links to be opened in new tabs
   $('a').click( (event) => { browser.tabs.create({url:event.target.href}) } )
 }
+
+/*
+if(userPreferencesAreEmpty()){
+  var reader = new FileReader();
+
+	var text1 = reader.readAsText('Input.txt');
+  
+  document.getElementById("userPreferences").innerHTML = text1; 
+}
+*/
