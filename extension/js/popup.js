@@ -23,7 +23,7 @@ function parseUrl(url){
 
 function getInfoFromAPI(site){
 	var req = $.getJSON("https://tosdr.org/api/1/service/" + site +".json").done(function(data) {
-	  return JSON.parse(data);
+	  return data;
 	});
 
 	return JSON.parse(req.responseText);
