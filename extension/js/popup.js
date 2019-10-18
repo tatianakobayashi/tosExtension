@@ -18,6 +18,22 @@ var classificacaoDict = {
   "E": "Os Termos de serviço levantam sérias preocupações."
 }
 
+var translation_dict = {
+  "This service may collect, use, and share location data": "Este serviço pode coletar, usar e compartilhar dados de localização.",
+  "Your data may be processed and stored anywhere in the world": "Suas informações podem ser processadas e armazenadas em qualquer lugar do mundo.",
+  "This service tracks you on other websites": "Este serviço pode te monitorar em outros sites.",
+  "The service can read your private messages": "Este serviço pode ler suas mensagens privadas.",
+  "You agree to defend, indemnify, and hold the service harmless in case of a claim related to your use of the service": "",
+  "The service may use tracking pixels, web beacons, browser fingerprinting, and/or device fingerprinting on users.": "",
+  "This service can use your content for all their existing and future services": ""
+}
+
+var pointDict = {
+  "bad": "Ruim",
+  "good": "Bom",
+  "neutral": "Neutro"
+}
+
 // URL parser 
 function parseUrl(url){
   var parsed_url = url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/);
@@ -74,6 +90,16 @@ function setInfoInHTML(data){
 
   var siteInfoArray = getSiteInfo(data);
 
+  siteInfoArray.forEach(function(content, index){
+      var topic = htmlWithClass("div", "topic");
+      topic += htmlWithClass("span", "topicTitle") + content.title + spanEnd;
+      topic += htmlWithClass("span", "topicPoint") + pointDict[content.point] + spanEnd;
+      topic += htmlWithClass("span", "topicScore") + content.score + spanEnd;
+      topic += htmlWithClass("span", "topicPrivacy") + privacyRelated(content.privacyRelated) + spanEnd;
+      topic += divEnd;
+      innerHtml += topic;
+    }
+  );
   // TODO
 
   html.innerHtml = innerHtml;
