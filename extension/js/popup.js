@@ -4,81 +4,86 @@ $('#alert').hide()
 // to close the alert
 $("#alert").click(() => { $('#alert').hide() });
 
+// get all.json from TOS;DR API
+var allReq = $.getJSON("https://tosdr.org/api/1/all.json");
+var all = JSON.parse(allReq.responseText);
+
+var classificacaoDict = {
+  0: "Sem classificação",
+  "false": "Sem classificação",
+  "A": "Os Termos de serviço te tratam de forma justa, respeitam seus direitos e seguem as melhores práticas.",
+  "B": "Os Termos de serviço são justos com o usuário, mas podem ser melhorados.",
+  "C": "Os Termos de serviço são bons, mas alguns problemas precisam da sua consideração.",
+  "D": "Os Termos de serviço são muito irregulares ou existem problemas importantes que necessitam da sua atenção.",
+  "E": "Os Termos de serviço levantam sérias preocupações."
+}
+
+// URL parser 
 function parseUrl(url){
-  var parsed_url = url.replace('http://','').replace('https://','').split(/[/?#]/);
-  console.log(parsed_url[0]);
+  var parsed_url = url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/);
+  // console.log(parsed_url[0]);
 
-  parsed_url = parsed_url[0];
-
-  var remove = ["www.", ".com"];
-  
-  remove.forEach(element => {
-    parsed_url = parsed_url.replace(element, "");  
-  });
-
-  parsed_url = parsed_url.split(".");
-
-  return parsed_url;
+  return parsed_url[0];
 }
 
+// get site information, if exists. If not, return null
 function getInfoFromAPI(site){
-	var req = $.getJSON("https://tosdr.org/api/1/service/" + site +".json").done(function(data) {
-	  return data;
-	});
+  var review = all["tosdr/review/" + site];
 
-	return JSON.parse(req.responseText);
+  if(review){
+    if(review.see){
+      return all["tosdr/review/" + review.see];
+    }
+    else{
+      return review;
+    }  
+  }
+  else{
+    return null;
+  }
 }
 
+// Set rating string
 function ratingString(rating){
-	if(rating == false){
-		return "Sem classificação";
-	}
-	else{
-		return rating;
-	}
+  return classificacaoDict[rating];
+}
+
+function getSiteInfo(siteJson){
+  var infoArray = [];
+
+  // Save API information on site in an Array
+  siteJson.points.forEach(function(point){
+    infoArray.push(siteJson.pointsData[point]); // Already are objects
+  })
+
+  return infoArray;
+}
+
+function htmlWithClass(htmlTag, cssClass){
+  return "<" + htmlTag +" class=\"" + cssClass + "\">";
 }
 
 function setInfoInHTML(data){
-	var html = document.getId("info");// getFromId
+  const divEnd = "</div>";
+  const spanEnd = "</span>";
 
-	var innerHtml = "<div class=\"name\">" + data.name + "</div>";
-	var innerHtml = innerHtml + "<div class=\"rating\"><span class=\"tosdrLabel\">Classificação: </span>" + ratingString(data.rated) + "</div>";
+  var html = document.getId("info");// getFromId
+
+  var innerHtml = htmlWithClass("div", "name") + data.name + divEnd;
+  var innerHtml = innerHtml + htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
+
+  var siteInfoArray = getSiteInfo(data);
 
   // TODO
 
-	html.innerHtml = innerHtml;
+  html.innerHtml = innerHtml;
 }
-
-const tosdr_api = "https://tosdr.org/api/1/service/";
 
 const alertError = (error, message) => {
   console.log(message)
   console.log(error)
   $('#alertText').text(message)
   $('#alert').show()
-}
-
-const getJsonFromAPI = (obj) => {
-  var json = $.getJSON(tosdr_api + obj + ".json").done(function(data) {
-    return JSON.stringify(data);
-  });
-  console.log(json);
-  return json;
-  /*
-  if (Array.isArray(obj)){
-    obj.forEach(element => {
-      var json = $.getJSON(tosdr_api + url + ".json").done(function(data) {
-        return console.log(JSON.stringify(data));
-      });
-
-      if(json != null){
-        return json;
-      }
-    });
-  }
-  else{
-    
-  }*/
 }
 
 const addLinkDataFromTab = (tabs) => {
@@ -93,37 +98,30 @@ const addLinkDataFromTab = (tabs) => {
 
   // console.log(parseUrl( currentTab.url));
 
-  document.getElementById("teste").innerHTML = getJsonFromAPI(url).stringify;
+  document.getElementById("teste").innerHTML = setInfoInHTML(getInfoFromAPI(url));
   
 }
-
-
-
-// const fs = require('fs') 
 
 /*
 function userPreferencesAreEmpty(){
   var json = JSON.parse($.getJSON('../data/userPreferences.json', function(data){return data;}));
-	if(json.isset == true){
-		return false;
-	}
-	else{
-		return true;
-	}
+  if(json.isset == true){
+    return false;
+  }
+  else{
+    return true;
+  }
 }
-
 function changeUserPreferences(){
   var text = readFile('../Input.txt');
   document.getElementById("userPreferences").innerHTML = text;
-	var json = JSON.parse('userPreferences.json');
-
+  var json = JSON.parse('userPreferences.json');
 }
-
 function searchToSInJSON(url){
-	$(jQuery.parseJSON(JSON.stringify(dataArray))).each(function() {  
-	    if (this.url == url) {
-	    	return this;
-	    }
+  $(jQuery.parseJSON(JSON.stringify(dataArray))).each(function() {  
+      if (this.url == url) {
+        return this;
+      }
   });
 }
 */
@@ -146,8 +144,7 @@ if(chrome) {
 /*
 if(userPreferencesAreEmpty()){
   var reader = new FileReader();
-
-	var text1 = reader.readAsText('Input.txt');
+  var text1 = reader.readAsText('Input.txt');
   
   document.getElementById("userPreferences").innerHTML = text1; 
 }
