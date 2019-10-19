@@ -125,7 +125,10 @@ const addLinkDataFromTab = (tabs) => {
   // console.log(parseUrl( currentTab.url));
 
   document.getElementById("teste").innerHTML = setInfoInHTML(getInfoFromAPI(url));
+
   
+  setInfoInHTML(getInfoFromAPI(url, all));
+
 }
 
 /*
