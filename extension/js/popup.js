@@ -5,8 +5,31 @@ $('#alert').hide()
 $("#alert").click(() => { $('#alert').hide() });
 
 // get all.json from TOS;DR API
-var allReq = $.getJSON("https://tosdr.org/api/1/all.json");
-var all = JSON.parse(allReq.responseText);
+var all;
+
+function getAllFromAPI(){
+  $.getJSON("https://tosdr.org/api/1/all.json").done(function(data) {
+      all = data;
+  });
+}
+
+/*
+// Função da extensão oficial - TODO: testar
+function getServices() { // eslint-disable-line no-unused-vars
+  const requestURL = 'https://tosdr.org/api/1/all.json';
+
+  const driveRequest = new Request(requestURL, {
+    method: 'GET',
+  });
+
+  return fetch(driveRequest).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    }
+    throw response.status;
+  });
+}
+*/
 
 var classificacaoDict = {
   0: "Sem classificação",
@@ -44,6 +67,12 @@ function parseUrl(url){
 
 // get site information, if exists. If not, return null
 function getInfoFromAPI(site){
+  if(typeof(all) == 'undefined'){
+    console.log("getAll");
+    getAllFromAPI();
+  }
+  console.log(all);
+
   var review = all["tosdr/review/" + site];
 
   if(review){
@@ -83,7 +112,7 @@ function setInfoInHTML(data){
   const divEnd = "</div>";
   const spanEnd = "</span>";
 
-  var html = document.getId("info");// getFromId
+  var html = document.getElementById("info");// getFromId
 
   var innerHtml = htmlWithClass("div", "name") + data.name + divEnd;
   var innerHtml = innerHtml + htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
@@ -124,9 +153,17 @@ const addLinkDataFromTab = (tabs) => {
 
   // console.log(parseUrl( currentTab.url));
 
+  if(typeof(all) == 'undefined'){
+    getAllFromAPI();
+  }
+
   document.getElementById("teste").innerHTML = setInfoInHTML(getInfoFromAPI(url));
 
   
+  if(typeof(all) == 'undefined'){
+    getAllFromAPI();
+  }
+
   setInfoInHTML(getInfoFromAPI(url, all));
 
 }
@@ -156,6 +193,7 @@ function searchToSInJSON(url){
 */
 
 // To enable cross-browser use you need to see if this is Chrome or not
+
 if(chrome) {
   chrome.tabs.query(
     {active: true, currentWindow: true},

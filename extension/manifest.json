@@ -1,14 +1,15 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Template Browser Extension",
   "description": "Template Browser Extension",
-  "homepage_url": "https://github.com/ryandav/template-browser-extension",
+  "homepage_url": "https://github.com/tatianakobayashi/template-browser-extension",
   "version": "0.0.1",
   "browser_action": {
    "default_popup": "popup.html",
    "default_title": "Template Browser Extension"
   },
   "permissions": [
-    "tabs"
+    "tabs", 
+    "https://tosdr.org"
   ]
 }
