@@ -101,21 +101,21 @@ function setInfoInHTML(data){
   const divEnd = "</div>";
   const spanEnd = "</span>";
 
-  document.getElementById("siteInfo").innerHTML = htmlWithClass("div", "name") + data.name + divEnd;
-  document.getElementById("siteInfo").innerHTML = htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
+  document.getElementById("siteName").innerHTML = htmlWithClass("div", "name") + data.name + divEnd;
+  document.getElementById("siteRating").innerHTML = htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
 
   getSiteInfo(data);
 
   infoArray.forEach(function(content, index){
-      var topic = htmlWithClass("div", "topic");
-      topic += htmlWithClass("span", "topicTitle") + content.title + spanEnd;
-      topic += htmlWithClass("span", "topicPoint") + pointDict[content.point] + spanEnd;
-      topic += htmlWithClass("span", "topicScore") + content.score + spanEnd;
+      var topic = htmlWithClass("ul", "topic");
+      topic += "<li>" +  htmlWithClass("span", "topicTitle") + content.title + spanEnd+ "</li>";
+      topic += "<li>" +  htmlWithClass("span", "topicPoint "+ content.point) + pointDict[content.point] + spanEnd+ "</li>";
+      topic += "<li>" +  htmlWithClass("span", "topicScore") + content.score + spanEnd+ "</li>";
       //if(content.privacyRelated){
-      //  topic += htmlWithClass("span", "topicPrivacy") + privacyRelated(content.privacyRelated) + spanEnd;
+      //  topic += "<li>" +  htmlWithClass("span", "topicPrivacy") + privacyRelated(content.privacyRelated) + spanEnd;
       //}
-      topic += divEnd;
-      document.getElementById("siteInfo").innerHTML += topic;
+      topic += "</ul>";
+      document.getElementById("topicList").innerHTML += topic;
     }
   );
 }

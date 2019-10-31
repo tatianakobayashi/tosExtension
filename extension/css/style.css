@@ -5,6 +5,27 @@ body {
   font-weight: bold;
 }
 
+.bad{
+  color: red;
+}
+
+.good{
+  color: green;
+}
+
+.neutral{
+  color: gray;
+}
+
+.name{
+  font-weight: bold; 
+  font-size: 25px;
+}
+
+.tosdrLabel{
+  font-weight: bold;
+}
+
 @media screen and (max-width: 360px) {
   body {
     width: 100%;
