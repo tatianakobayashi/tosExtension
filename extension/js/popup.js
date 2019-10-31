@@ -101,8 +101,8 @@ function setInfoInHTML(data){
   const divEnd = "</div>";
   const spanEnd = "</span>";
 
-  document.getElementById("siteInfo").innerHtml = htmlWithClass("div", "name") + data.name + divEnd;
-  document.getElementById("siteInfo").innerHtml = htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
+  document.getElementById("siteInfo").innerHTML = htmlWithClass("div", "name") + data.name + divEnd;
+  document.getElementById("siteInfo").innerHTML = htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
 
   getSiteInfo(data);
 
@@ -115,7 +115,7 @@ function setInfoInHTML(data){
       //  topic += htmlWithClass("span", "topicPrivacy") + privacyRelated(content.privacyRelated) + spanEnd;
       //}
       topic += divEnd;
-      document.getElementById("siteInfo").innerHtml += topic;
+      document.getElementById("siteInfo").innerHTML += topic;
     }
   );
 }
