@@ -6,14 +6,8 @@ $("#alert").click(() => { $('#alert').hide() });
 
 // get all.json from TOS;DR API
 var all;
+var infoArray = [];
 
-function getAllFromAPI(){
-  $.getJSON("https://tosdr.org/api/1/all.json").done(function(data) {
-      all = data;
-  });
-}
-
-/*
 // Função da extensão oficial - TODO: testar
 function getServices() { // eslint-disable-line no-unused-vars
   const requestURL = 'https://tosdr.org/api/1/all.json';
@@ -29,7 +23,6 @@ function getServices() { // eslint-disable-line no-unused-vars
     throw response.status;
   });
 }
-*/
 
 var classificacaoDict = {
   0: "Sem classificação",
@@ -94,14 +87,10 @@ function ratingString(rating){
 }
 
 function getSiteInfo(siteJson){
-  var infoArray = [];
-
   // Save API information on site in an Array
   siteJson.points.forEach(function(point){
-    infoArray.push(siteJson.pointsData[point]); // Already are objects
+    infoArray.push(point); // Already are objects
   })
-
-  return infoArray;
 }
 
 function htmlWithClass(htmlTag, cssClass){
@@ -112,26 +101,23 @@ function setInfoInHTML(data){
   const divEnd = "</div>";
   const spanEnd = "</span>";
 
-  var html = document.getElementById("info");// getFromId
+  document.getElementById("siteInfo").innerHtml = htmlWithClass("div", "name") + data.name + divEnd;
+  document.getElementById("siteInfo").innerHtml = htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
 
-  var innerHtml = htmlWithClass("div", "name") + data.name + divEnd;
-  var innerHtml = innerHtml + htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
+  getSiteInfo(data);
 
-  var siteInfoArray = getSiteInfo(data);
-
-  siteInfoArray.forEach(function(content, index){
+  infoArray.forEach(function(content, index){
       var topic = htmlWithClass("div", "topic");
       topic += htmlWithClass("span", "topicTitle") + content.title + spanEnd;
       topic += htmlWithClass("span", "topicPoint") + pointDict[content.point] + spanEnd;
       topic += htmlWithClass("span", "topicScore") + content.score + spanEnd;
-      topic += htmlWithClass("span", "topicPrivacy") + privacyRelated(content.privacyRelated) + spanEnd;
+      //if(content.privacyRelated){
+      //  topic += htmlWithClass("span", "topicPrivacy") + privacyRelated(content.privacyRelated) + spanEnd;
+      //}
       topic += divEnd;
-      innerHtml += topic;
+      document.getElementById("siteInfo").innerHtml += topic;
     }
   );
-  // TODO
-
-  html.innerHtml = innerHtml;
 }
 
 const alertError = (error, message) => {
@@ -152,18 +138,6 @@ const addLinkDataFromTab = (tabs) => {
   document.getElementById("tabInformation").innerHTML = url; 
 
   // console.log(parseUrl( currentTab.url));
-
-  if(typeof(all) == 'undefined'){
-    getAllFromAPI();
-  }
-
-  document.getElementById("teste").innerHTML = setInfoInHTML(getInfoFromAPI(url));
-
-  
-  if(typeof(all) == 'undefined'){
-    getAllFromAPI();
-  }
-
   setInfoInHTML(getInfoFromAPI(url, all));
 
 }
@@ -194,6 +168,13 @@ function searchToSInJSON(url){
 
 // To enable cross-browser use you need to see if this is Chrome or not
 
+getServices().then(function(value){
+  console.log(value);
+  all = value;
+}, function(cause){
+  console.log(cause);
+}).then(function(val){
+
 if(chrome) {
   chrome.tabs.query(
     {active: true, currentWindow: true},
@@ -207,6 +188,8 @@ if(chrome) {
   // This enables links to be opened in new tabs
   $('a').click( (event) => { browser.tabs.create({url:event.target.href}) } )
 }
+
+});
 
 /*
 if(userPreferencesAreEmpty()){
