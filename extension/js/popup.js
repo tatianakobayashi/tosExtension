@@ -50,6 +50,13 @@ var pointDict = {
   "neutral": "Neutro"
 }
 
+var alertDict = {
+  "bad": "alert-danger",
+  "good": "alert-success",
+  "neutral": "alert-light",
+  "undefined": "alert-info"
+}
+
 // URL parser 
 function parseUrl(url){
   var parsed_url = url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/);
@@ -107,9 +114,18 @@ function setInfoInHTML(data){
   getSiteInfo(data);
 
   infoArray.forEach(function(content, index){
-      var topic = htmlWithClass("ul", "topic");
+      var tagClass = "";
+      if(typeof(alertDict[content.point]) == 'undefined'){
+        tagClass = "alert-secondary ";
+      }
+      else{
+        tagClass = alertDict[content.point];
+      }
+
+
+      var topic = htmlWithClass("ul", "topic alert " + tagClass);
       topic += "<li>" +  htmlWithClass("span", "topicTitle") + content.title + spanEnd+ "</li>";
-      topic += "<li>" +  htmlWithClass("span", "topicPoint "+ content.point) + pointDict[content.point] + spanEnd+ "</li>";
+      // topic += "<li>" +  htmlWithClass("span", "topicPoint "+ content.point) + pointDict[content.point] + spanEnd+ "</li>";
       topic += "<li>" +  htmlWithClass("span", "topicScore") + content.score + spanEnd+ "</li>";
       //if(content.privacyRelated){
       //  topic += "<li>" +  htmlWithClass("span", "topicPrivacy") + privacyRelated(content.privacyRelated) + spanEnd;
