@@ -7,6 +7,7 @@ $("#alert").click(() => { $('#alert').hide() });
 // get all.json from TOS;DR API
 var all;
 var infoArray = [];
+var documentArray = [];
 
 // Função da extensão oficial - TODO: testar
 function getServices() { // eslint-disable-line no-unused-vars
@@ -77,12 +78,13 @@ function parseUrl(url){
 
 // get site information, if exists. If not, return null
 function getInfoFromAPI(site){
+  /*
   if(typeof(all) == 'undefined'){
     console.log("getAll");
     getAllFromAPI();
   }
   console.log(all);
-
+  */
   var review = all["tosdr/review/" + site];
 
   if(review){
@@ -110,6 +112,13 @@ function getSiteInfo(siteJson){
   })
 }
 
+function getUrlList(siteJson){
+  // Save url list in an Array
+  siteJson.documents.forEach(function(doc){
+    documentArray.push(doc);
+  })
+}
+
 function htmlWithClass(htmlTag, cssClass){
   return "<" + htmlTag +" class=\"" + cssClass + "\">";
 }
@@ -125,6 +134,7 @@ function setInfoInHTML(data){
       spanEnd + divEnd;
 
   getSiteInfo(data);
+  getUrlList(data);
 
   infoArray.forEach(function(content, index){
       var tagClass = "";
@@ -135,9 +145,18 @@ function setInfoInHTML(data){
         tagClass = alertDict[content.point];
       }
 
+      var title = "";
+      if(content.title in translation_dict){
+        // translation_dict[content.title] !== undefined
+        title = translation_dict[content.title];
+      }
+      else{
+        title = content.title;
+      }
+
 
       // var topic = htmlWithClass("ul", "topic alert " + tagClass);
-      var topic = htmlWithClass("div", "topic alert " + tagClass) + content.title + divEnd;
+      var topic = htmlWithClass("div", "topic alert " + tagClass) + title + divEnd;
       // topic += "<li>" +  htmlWithClass("span", "topicPoint "+ content.point) + pointDict[content.point] + spanEnd+ "</li>";
       // topic += "<li>" +  htmlWithClass("span", "topicScore") + content.score + spanEnd+ "</li>";
       //if(content.privacyRelated){
@@ -147,6 +166,13 @@ function setInfoInHTML(data){
       document.getElementById("topicList").innerHTML += topic;
     }
   );
+
+  var urlList = "";
+  documentArray.forEach(function(content, index){
+    urlList += "<a class=\"\" href=\"" + content.url + "\">" + content.name + "</a>";
+  }
+
+  document.getElementById("urlList").innerHTML += urlList;
 }
 
 const alertError = (error, message) => {
@@ -198,26 +224,24 @@ function searchToSInJSON(url){
 // To enable cross-browser use you need to see if this is Chrome or not
 
 getServices().then(function(value){
-  console.log(value);
+  //console.log(value);
   all = value;
 }, function(cause){
   console.log(cause);
 }).then(function(val){
-
-if(chrome) {
-  chrome.tabs.query(
-    {active: true, currentWindow: true},
-    (arrayOfTabs) => { addLinkDataFromTab(arrayOfTabs) }
-  );
-  // This enables links to be opened in new tabs
-  $('a').click( (event) => { chrome.tabs.create({url:event.target.href}) } )
-} else {
-  browser.tabs.query({active: true, currentWindow: true})
-    .then(addLinkDataFromTab)
-  // This enables links to be opened in new tabs
-  $('a').click( (event) => { browser.tabs.create({url:event.target.href}) } )
-}
-
+  if(chrome) {
+    chrome.tabs.query(
+      {active: true, currentWindow: true},
+      (arrayOfTabs) => { addLinkDataFromTab(arrayOfTabs) }
+    );
+    // This enables links to be opened in new tabs
+    $('a').click( (event) => { chrome.tabs.create({url:event.target.href}) } )
+  } else {
+    browser.tabs.query({active: true, currentWindow: true})
+      .then(addLinkDataFromTab)
+    // This enables links to be opened in new tabs
+    $('a').click( (event) => { browser.tabs.create({url:event.target.href}) } )
+  }
 });
 
 /*
