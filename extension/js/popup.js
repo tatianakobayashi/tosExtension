@@ -57,6 +57,16 @@ var alertDict = {
   "undefined": "alert-info"
 }
 
+var ratingColorDict = {
+  0: "black",
+  "false": "black",
+  "A": "green",
+  "B": "yellow",
+  "C": "orange",
+  "D": "red",
+  "E": "burgundy"
+}
+
 // URL parser 
 function parseUrl(url){
   var parsed_url = url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/);
@@ -109,7 +119,10 @@ function setInfoInHTML(data){
   const spanEnd = "</span>";
 
   document.getElementById("siteName").innerHTML = htmlWithClass("div", "name") + data.name + divEnd;
-  document.getElementById("siteRating").innerHTML = htmlWithClass("div", "rating") + htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + ratingString(data.rated) + divEnd;
+  document.getElementById("siteRating").innerHTML = htmlWithClass("div", "rating") + 
+      htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + 
+      htmlWithClass("span",  ratingColorDict[data.rated]) + ratingString(data.rated) + 
+      spanEnd + divEnd;
 
   getSiteInfo(data);
 
@@ -123,14 +136,14 @@ function setInfoInHTML(data){
       }
 
 
-      var topic = htmlWithClass("ul", "topic alert " + tagClass);
-      topic += "<li>" +  htmlWithClass("span", "topicTitle") + content.title + spanEnd+ "</li>";
+      // var topic = htmlWithClass("ul", "topic alert " + tagClass);
+      var topic = htmlWithClass("div", "topic alert " + tagClass) + content.title + divEnd;
       // topic += "<li>" +  htmlWithClass("span", "topicPoint "+ content.point) + pointDict[content.point] + spanEnd+ "</li>";
-      topic += "<li>" +  htmlWithClass("span", "topicScore") + content.score + spanEnd+ "</li>";
+      // topic += "<li>" +  htmlWithClass("span", "topicScore") + content.score + spanEnd+ "</li>";
       //if(content.privacyRelated){
       //  topic += "<li>" +  htmlWithClass("span", "topicPrivacy") + privacyRelated(content.privacyRelated) + spanEnd;
       //}
-      topic += "</ul>";
+      // topic += "</ul>";
       document.getElementById("topicList").innerHTML += topic;
     }
   );

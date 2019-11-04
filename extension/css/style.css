@@ -5,15 +5,31 @@ body {
   font-weight: bold;
 }
 
-.bad{
+.rating{
+  font-weight: bold;
+}
+
+.red{
   color: red;
 }
 
-.good{
+.green{
   color: green;
 }
 
-.neutral{
+.yellow{
+  color: yellow;
+}
+
+.orange{
+  color: orange;
+}
+
+.burgundy{
+  color: brown;
+}
+
+.gray{
   color: gray;
 }
 
