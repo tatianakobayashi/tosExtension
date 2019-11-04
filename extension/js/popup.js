@@ -169,7 +169,7 @@ function setInfoInHTML(data){
 
   var urlList = "";
   documentArray.forEach(function(content, index){
-    urlList += "<a class=\"\" href=\"" + content.url + "\">" + content.name + "</a>";
+    urlList += "<a class=\"\" href=\"" + content.url + "\">" + content.name + "</a> <br />";
   }
 
   document.getElementById("urlList").innerHTML += urlList;
