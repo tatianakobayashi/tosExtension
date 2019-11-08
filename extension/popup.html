@@ -1,77 +1,92 @@
 <!doctype html>
 <html>
 
-  <head>
-    <meta charset="utf-8">
-    <title>Termos de serviço</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/themes/flatly/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    
-    <script src="js/lib/jquery.js"></script>
-    <script src="js/lib/clipboard-polyfill.js"></script>
-    <script src="js/lib/bootstrap.bundle.js"></script>
-    </script>
+<head>
+	<meta charset="utf-8">
+	<title>Termos de serviço</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/themes/flatly/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 
-  </head>
+	<script src="js/lib/jquery.js"></script>
+	<script src="js/lib/clipboard-polyfill.js"></script>
+	<script src="js/lib/bootstrap.bundle.js"></script>
+</head>
 
-  <body>
+<body>
     <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
+        <div class="row">
+	        <div class="col-sm-12">
+				<p> <h5>Termos de serviço</h5> </p> 
+		        <!-- <p>
+		            <div id="alert" class="alert alert-dismissible alert-primary" role="alert">
+		                <button type="button" class="close">&times;</button>
+		                <span id="alertText"></span>
+		            </div>
+		        </p> -->
 
-          <p>
-            <h5>Termos de serviço</h5>
-          </p>
+		        <!-- <p>
+		            <a href="https://github.com/ryandav/template-browser-extension"
+		            class="btn btn-primary btn-block">
+		                Sobre
+		            </a>
+		        </p> -->
 
-          <!-- <p>
-            <div id="alert" class="alert alert-dismissible alert-primary" role="alert">
-              <button type="button" class="close">&times;</button>
-              <span id="alertText"></span>
-            </div>
-          </p> -->
-
-         <!-- <p>
-            <a href="https://github.com/ryandav/template-browser-extension"
-            class="btn btn-primary btn-block">
-              Sobre
-            </a>
-          </p> -->
-
-          
-          <div id="userPreferences">
-
-          </div>
-          <!--  -->
-          
-          
-          <form action="javascript:changeUserPreferences()">
-            <button type="submit" class="btn btn-primary" id="editPreferences">Editar Preferências</button>
-          </form>
+	        	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#userPreferencesCollapse" aria-expanded="false" aria-controls="userPreferencesCollapse">
+					Url dos Termos
+				</button>
+				<p></p>
+				<div class="collapse" id="userPreferencesCollapse">
+	            	<div class="card card-body">
+	          			<div id="userPreferences">
+	          				<form action="javascript:saveUserPreferences();">
+		
+							    <button type="submit" class="btn btn-primary">Salvar</button>
+							</form>
+	          			</div>
+	      			</div>
+	  			</div>
+	          
+	          
+	        	<form action="javascript:changeUserPreferences()">
+	        		<button type="submit" class="btn btn-primary" id="editPreferences">Editar Preferências</button>
+	        	</form>
 
 
-          <h3 id="tabTitle" class="lead">Tab title</h3>
-            <div id="tabInformation">
+	          	<h3 id="tabTitle" class="lead">Tab title</h3>
+	            <div id="tabInformation"></div>
+	            
+	            <div>
+	              	Informações sobre os termos do site
+		            <div id="siteInfo">
+		                <span id="siteName"></span>
+		                <span id="siteRating"></span>
+		                
+		                <br />
+		                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#siteInformationCollapse" aria-expanded="false" aria-controls="siteInformationCollapse">
+		                  	Informações do Site
+		                </button>
+		                <p></p>
+		                <div class="collapse" id="siteInformationCollapse">
+		                  	<div class="card card-body">
+		                		<div id="topicList"></div>
+		              		</div>
+		              	</div>
 
-            </div>
-            
-            <div>
-              Informações sobre os termos do site
-              <div id="siteInfo">
-                <span id="siteName"></span>
-                <span id="siteRating"></span>
-                <div id="topicList">
-                </div>
-              </div>
-              <div id="urlList"></div>
-              </div>
-              </div>
-            </div>
-
-        </div> <!-- end col -->
-      </div> <!-- end row -->
+					</div>
+					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#urlListCollapse" aria-expanded="false" aria-controls="urlListCollapse">
+						Url dos Termos
+					</button>
+					<p></p>
+					<div class="collapse" id="urlListCollapse">
+	                	<div class="card card-body">
+	              			<div id="urlList"></div>
+	              		</div>
+					</div>
+	            </div>
+	        </div> <!-- end col -->
+        </div> <!-- end row -->
     </div> <!-- end container -->
     <script src="js/popup.js"></script>
-  </body>
-
+</body>
 </html>
