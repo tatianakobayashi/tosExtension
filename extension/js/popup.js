@@ -8,6 +8,8 @@ $("#alert").click(() => { $('#alert').hide() });
 var all;
 var infoArray = [];
 var documentArray = [];
+var userPrefFields = ['dataUsage', 'privateMessages', 'tracking', 'indemnity', 'cookies', 'termsChange', 'contentRemoval'];
+var userPreferences = JSON.parse($.getJSON('../data/userPreferences.json', function(data){return data;}));
 
 // Função da extensão oficial - TODO: testar
 function getServices() { // eslint-disable-line no-unused-vars
@@ -197,29 +199,31 @@ const addLinkDataFromTab = (tabs) => {
 
 }
 
-/*
 function userPreferencesAreEmpty(){
-  var json = JSON.parse($.getJSON('../data/userPreferences.json', function(data){return data;}));
-  if(json.isset == true){
+  if(userPreferences.isset == true){
     return false;
   }
   else{
     return true;
   }
 }
+
 function changeUserPreferences(){
-  var text = readFile('../Input.txt');
-  document.getElementById("userPreferences").innerHTML = text;
   var json = JSON.parse('userPreferences.json');
 }
-function searchToSInJSON(url){
-  $(jQuery.parseJSON(JSON.stringify(dataArray))).each(function() {  
-      if (this.url == url) {
-        return this;
+
+function saveUserPreferences(){
+  userPrefFields.forEach((name)=>{
+    var radios = document.getElementsByName(name);
+
+    for (var i = 0, length = radios.length; i < length; i++){
+      if(radios[i].checked){
+        userPreferences[name] = radios[i].value
       }
+      
+    }
   });
 }
-*/
 
 // To enable cross-browser use you need to see if this is Chrome or not
 
@@ -244,11 +248,22 @@ getServices().then(function(value){
   }
 });
 
-/*
 if(userPreferencesAreEmpty()){
-  var reader = new FileReader();
-  var text1 = reader.readAsText('Input.txt');
-  
-  document.getElementById("userPreferences").innerHTML = text1; 
+
+  userPrefFields.forEach((name)=>{
+    var radios = document.getElementsByName(name);
+
+    for (var i = 0, length = radios.length; i < length; i++){
+      radios[i].checked = false;
+    }
+  });
 }
-*/
+else{
+  userPrefFields.forEach((name)=>{
+    var radios = document.getElementsByName(name);
+
+    for (var i = 0, length = radios.length; i < length; i++){
+      radios[i].checked = userPreferences[name];
+    }
+  });
+}
