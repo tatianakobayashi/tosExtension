@@ -9,7 +9,7 @@ var all;
 var infoArray = [];
 var documentArray = [];
 var userPrefFields = ['dataUsage', 'privateMessages', 'tracking', 'indemnity', 'cookies', 'termsChange', 'contentRemoval'];
-var userPreferences = JSON.parse($.getJSON('../data/userPreferences.json', function(data){return data;}));
+var userPreferences = $.getJSON('../data/userPreferences.json', function(data){return data;});
 
 // Função da extensão oficial - TODO: testar
 function getServices() { // eslint-disable-line no-unused-vars
