@@ -4,14 +4,15 @@ $('#alert').hide()
 // to close the alert
 $("#alert").click(() => { $('#alert').hide() });
 
-// get all.json from TOS;DR API
+// Global Variables
 var all;
 var infoArray = [];
 var documentArray = [];
 var userPrefFields = ['dataUsage', 'privateMessages', 'tracking', 'indemnity', 'cookies', 'termsChange', 'contentRemoval'];
 var userPreferences = $.getJSON('../data/userPreferences.json', function(data){return data;});
+var loggedIn = false;
 
-// Função da extensão oficial - TODO: testar
+// Retorna
 function getServices() { // eslint-disable-line no-unused-vars
   const requestURL = 'https://tosdr.org/api/1/all.json';
 
@@ -35,16 +36,6 @@ var classificacaoDict = {
   "C": "Os Termos de serviço são bons, mas alguns problemas precisam da sua consideração.",
   "D": "Os Termos de serviço são muito irregulares ou existem problemas importantes que necessitam da sua atenção.",
   "E": "Os Termos de serviço levantam sérias preocupações."
-}
-
-var translation_dict = {
-  "This service may collect, use, and share location data": "Este serviço pode coletar, usar e compartilhar dados de localização.",
-  "Your data may be processed and stored anywhere in the world": "Suas informações podem ser processadas e armazenadas em qualquer lugar do mundo.",
-  "This service tracks you on other websites": "Este serviço pode te monitorar em outros sites.",
-  "The service can read your private messages": "Este serviço pode ler suas mensagens privadas.",
-  "You agree to defend, indemnify, and hold the service harmless in case of a claim related to your use of the service": "",
-  "The service may use tracking pixels, web beacons, browser fingerprinting, and/or device fingerprinting on users.": "",
-  "This service can use your content for all their existing and future services": ""
 }
 
 var pointDict = {
@@ -148,13 +139,9 @@ function setInfoInHTML(data){
       }
 
       var title = "";
-      if(content.title in translation_dict){
-        // translation_dict[content.title] !== undefined
-        title = translation_dict[content.title];
-      }
-      else{
-        title = content.title;
-      }
+
+      // TODO get translation from server
+      title = content.title;
 
 
       // var topic = htmlWithClass("ul", "topic alert " + tagClass);
@@ -212,7 +199,7 @@ function changeUserPreferences(){
   var json = JSON.parse('userPreferences.json');
 }
 
-function saveUserPreferences(){
+document.getElementById("savePreferencesButton").onclick = function saveUserPreferences(){
   userPrefFields.forEach((name)=>{
     var radios = document.getElementsByName(name);
 
@@ -223,7 +210,38 @@ function saveUserPreferences(){
       
     }
   });
+
+  console.log("Preferencias salvas");
 }
+
+
+document.getElementById("loginLink").onclick = function login(){
+  document.getElementById("loggedUserNotice").hidden = false;
+  document.getElementById("notLoggedUser").hidden = true;
+
+  document.getElementById("userButton").setAttribute("data-target", "#loggedUserNotice");
+  document.getElementById("userButton").setAttribute("aria-controls", "loggedUserNotice");
+}
+
+document.getElementById("logoutLink").onclick = function logout(){
+  document.getElementById("loggedUserNotice").hidden = true;
+  document.getElementById("notLoggedUser").hidden = false;
+
+  document.getElementById("userButton").setAttribute("data-target", "#notLoggedUser");
+  document.getElementById("userButton").setAttribute("aria-controls", "notLoggedUser");
+}
+
+
+
+/*
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("logoutLink").addEventListener("click", logout);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("loginLink").addEventListener("click", login);
+});
+*/
 
 // To enable cross-browser use you need to see if this is Chrome or not
 

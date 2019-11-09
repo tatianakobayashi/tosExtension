@@ -30,21 +30,83 @@
 		            class="btn btn-primary btn-block">
 		                Sobre
 		            </a>
-		        </p> -->
-		
-		<p>Todas as informações apresentadas são retiradas da API do site <a href="https://tosdr.org/">ToS;DR (em Inglês)</a></p>
-		<p>Para mais informações sobre versões passadas de termos de uso e mudanças feitas entre tais versões, visite <a href="https://tosback.org/">TosBack (Em Inglês)</a></p>
+				</p> -->
+				
+				<p>
+					<button id="userButton" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#notLoggedUser" aria-expanded="false" aria-controls="notLoggedUser">
+						Usuário
+					</button>
+				</p>
+				<div id="loggedUserNotice" class="collapse" hidden>
+					Você está logado como <span id="userName">Nome_usuário</span>.
+					<form action="javascript:logout();">
+						<button id="logoutLink" type="submit" class="btn btn-link btn-sm"><small>(sair)</small></button>
+					</form>
+				</div>
+				<div id="notLoggedUser" class="collapse">
 
+					<form action="javascript:login();">
+						<div class="form-group">
+							<label for="email">Email: </label>
+							<input type="email" name="email" class="form-control"/>
+						</div>
+						<div class="form-group">
+							<label for="password">Senha: </label>
+							<input type="password" name="password" class="form-control"/>
+						</div>
+						<button id="loginLink" type="submit" class="btn btn-primary">Login</button>
+					</form>
+				</div>
+
+				<p></p>
+		
+				<p>
 	        	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#userPreferencesCollapse" aria-expanded="false" aria-controls="userPreferencesCollapse">
 					Preferências
 				</button>
-				<p></p>
+				</p>
 				<div class="collapse" id="userPreferencesCollapse">
 	            	<div class="card card-body">
 	          			<div id="userPreferences">
 	          				<form action="javascript:saveUserPreferences();">
+
+								<fieldset>
+									<label for="dataUsage">Uso de Dados</label>
+									<input type="radio" name="dataUsage" value="true"> Sim
+									<input type="radio" name="dataUsage" value="false"> Não
+								</fieldset>
+								<fieldset>
+									<label for="privateMessages">Mensagens privadas</label>
+									<input type="radio" name="privateMessages" value="true"> Sim
+									<input type="radio" name="privateMessages" value="false"> Não
+								</fieldset>
+								<fieldset>
+									<label for="tracking">Rastreamento</label>
+									<input type="radio" name="tracking" value="true"> Sim
+									<input type="radio" name="tracking" value="false"> Não
+								</fieldset>
+								<fieldset>
+									<label for="indemnity">Casos judiciais</label>
+									<input type="radio" name="indemnity" value="true"> Sim
+									<input type="radio" name="indemnity" value="false"> Não
+								</fieldset>
+								<fieldset>
+									<label for="cookies">Uso de cookies</label>
+									<input type="radio" name="cookies" value="true"> Sim
+									<input type="radio" name="cookies" value="false"> Não
+								</fieldset>
+								<fieldset>
+									<label for="termsChange">Alteração dos Termos</label>
+									<input type="radio" name="termsChange" value="true"> Sim
+									<input type="radio" name="termsChange" value="false"> Não
+								</fieldset>
+								<fieldset>
+									<label for="contentRemoval">Remoção de Conteúdo</label>
+									<input type="radio" name="contentRemoval" value="true"> Sim
+									<input type="radio" name="contentRemoval" value="false"> Não
+								</fieldset>
 		
-							    <button type="submit" class="btn btn-primary">Salvar</button>
+							    <button id="savePreferencesButton" type="submit" class="btn btn-primary">Salvar</button>
 							</form>
 	          			</div>
 	      			</div>
@@ -81,7 +143,10 @@
 	              			<div id="urlList"></div>
 	              		</div>
 					</div>
-	            </div>
+				</div>
+				<!-- Outside information -->
+				<p>Todas as informações apresentadas são retiradas da API do site <a href="https://tosdr.org/">ToS;DR (em Inglês)</a></p>
+				<p>Para mais informações sobre versões passadas de termos de uso e mudanças feitas entre tais versões, visite <a href="https://tosback.org/">TosBack (Em Inglês)</a></p>
 	        </div> <!-- end col -->
         </div> <!-- end row -->
     </div> <!-- end container -->
