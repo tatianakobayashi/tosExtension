@@ -61,6 +61,10 @@ var ratingColorDict = {
   "E": "burgundy"
 }
 
+var topicDict = {
+  
+}
+
 // URL parser 
 function parseUrl(url){
   var parsed_url = url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/);
