@@ -191,7 +191,7 @@ const addLinkDataFromTab = (tabs) => {
 }
 
 function userPreferencesAreEmpty(){
-  if(userPreferences.isset == true){
+  if(userPreferences != null){
     return false;
   }
   else{
@@ -246,6 +246,45 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById("loginLink").addEventListener("click", login);
 });
 */
+
+function setUserPreferences(){
+  userPrefFields.forEach((name)=>{
+    var radios = document.getElementsByName(name);
+
+    for (var i = 0, length = radios.length; i < length; i++){
+      if(radios[i].checked){
+        radios[i].value = userPreferences[name];
+      }
+      
+    }
+  });
+}
+
+function getPrefs(){
+  const requestURL = 'https://tossite.ignys.repl.co/getPrefJSON.php';
+
+  var driveRequest = new Request(requestURL, {
+    method: 'POST',
+    dataType: 'json',
+  });
+
+  return fetch(driveRequest).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    }
+    throw response.status;
+  });
+}
+
+function askSavedPreferences(){
+  console.log('asking...');
+  getPrefs().then((value)=>{
+    console.log(JSON.stringify(value));
+  }, (cause)=>{
+  console.log(cause);
+})
+  
+}
 
 // To enable cross-browser use you need to see if this is Chrome or not
 
