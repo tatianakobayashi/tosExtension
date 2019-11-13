@@ -33,9 +33,23 @@
 				</p> -->
 				
 				<p>
-					<button id="userButton" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#notLoggedUser" aria-expanded="false" aria-controls="notLoggedUser">
-						Usuário
-					</button>
+					<div class="btn-toolbar" role="toolbar">
+						<div class="btn-group mr-2" role="group" aria-label="First group">
+							<button id="userButton" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#notLoggedUser" aria-expanded="false" aria-controls="notLoggedUser">
+								Usuário
+							</button>
+						</div>
+						<div class="btn-group mr-2" role="group" aria-label="Second group">
+							<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#userPreferencesCollapse" aria-expanded="false" aria-controls="userPreferencesCollapse">
+								Preferências
+							</button>
+						</div>
+						<div class="btn-group mr-2" role="group" aria-label="Third group">
+							<form action="javascript:askSavedPreferences()">
+								<button type="submit" class="btn btn-primary">Carregar Preferências</button>
+							  </form>
+						</div>
+					</div>
 				</p>
 				<div id="loggedUserNotice" class="collapse" hidden>
 					Você está logado como <span id="userName">Nome_usuário</span>.
@@ -57,14 +71,6 @@
 						<button id="loginLink" type="submit" class="btn btn-primary">Login</button>
 					</form>
 				</div>
-
-				<p></p>
-		
-				<p>
-	        	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#userPreferencesCollapse" aria-expanded="false" aria-controls="userPreferencesCollapse">
-					Preferências
-				</button>
-				</p>
 				<div class="collapse" id="userPreferencesCollapse">
 	            	<div class="card card-body">
 	          			<div id="userPreferences">
@@ -112,10 +118,10 @@
 	      			</div>
 	  			</div>
 		<p></p>	          
-
+			<p>
 	          	<h3 id="tabTitle" class="lead">Tab title</h3>
 	            <div id="tabInformation"></div>
-	            
+	        </p>    
 	            <div>
 	              	Informações sobre os termos do site
 		            <div id="siteInfo">

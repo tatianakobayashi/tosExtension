@@ -9,8 +9,11 @@ var all;
 var infoArray = [];
 var documentArray = [];
 var userPrefFields = ['dataUsage', 'privateMessages', 'tracking', 'indemnity', 'cookies', 'termsChange', 'contentRemoval'];
-var userPreferences = $.getJSON('../data/userPreferences.json', function(data){return data;});
+var userPreferences;
 var loggedIn = false;
+var userId;
+var userName = "";
+var server = 'http://localhost/tcc/tosSite/';//'https://tossite.ignys.repl.co';
 
 // Retorna
 function getServices() { // eslint-disable-line no-unused-vars
@@ -218,7 +221,6 @@ document.getElementById("savePreferencesButton").onclick = function saveUserPref
   console.log("Preferencias salvas");
 }
 
-
 document.getElementById("loginLink").onclick = function login(){
   document.getElementById("loggedUserNotice").hidden = false;
   document.getElementById("notLoggedUser").hidden = true;
@@ -235,36 +237,52 @@ document.getElementById("logoutLink").onclick = function logout(){
   document.getElementById("userButton").setAttribute("aria-controls", "notLoggedUser");
 }
 
-
-
-/*
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById("logoutLink").addEventListener("click", logout);
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById("loginLink").addEventListener("click", login);
-});
-*/
-
-function setUserPreferences(){
+function loadPreferences(){
   userPrefFields.forEach((name)=>{
     var radios = document.getElementsByName(name);
 
     for (var i = 0, length = radios.length; i < length; i++){
-      if(radios[i].checked){
-        radios[i].value = userPreferences[name];
-      }
-      
+      radios[i].checked = userPreferences[name];
     }
   });
 }
 
-function getPrefs(){
-  const requestURL = 'https://tossite.ignys.repl.co/getPrefJSON.php';
+function getCredentials(email, senha){
+  const requestURL =  server + '/extension-login.php?e='+email+'&p='+password;
 
   var driveRequest = new Request(requestURL, {
-    method: 'POST',
+    method: 'GET',
+    dataType: 'json',
+  });
+
+  return fetch(driveRequest).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    }
+    throw response.status;
+  });
+}
+
+function login(){
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+
+  getCredentials(email, senha).then((value)=>{
+    console.log(JSON.stringify(value));
+
+    userId = value.userId;
+    userName = value.userName;
+    loggedIn = true;
+  }, (cause)=>{
+    console.log(cause);
+  });
+}
+
+function getPrefs(){
+  const requestURL = server + '/getPrefJSON.php?userId='+userId;
+
+  var driveRequest = new Request(requestURL, {
+    method: 'GET',
     dataType: 'json',
   });
 
@@ -280,10 +298,11 @@ function askSavedPreferences(){
   console.log('asking...');
   getPrefs().then((value)=>{
     console.log(JSON.stringify(value));
+    userPreferences = value;
+    loadPreferences();
   }, (cause)=>{
   console.log(cause);
-})
-  
+  });
 }
 
 // To enable cross-browser use you need to see if this is Chrome or not
@@ -320,11 +339,5 @@ if(userPreferencesAreEmpty()){
   });
 }
 else{
-  userPrefFields.forEach((name)=>{
-    var radios = document.getElementsByName(name);
-
-    for (var i = 0, length = radios.length; i < length; i++){
-      radios[i].checked = userPreferences[name];
-    }
-  });
+  loadPreferences();
 }
