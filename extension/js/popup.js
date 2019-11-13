@@ -231,19 +231,38 @@ function userPreferencesAreEmpty(){
   }
 }
 
+function sendNewPreferences(){
+  const requestURL =  server + '/savePrefJSON.php?userId='+userId+'&userPreferences='+JSON.stringify(userPreferences);
+
+  var driveRequest = new Request(requestURL, {
+    method: 'GET',
+    dataType: 'json',
+  });
+
+  return fetch(driveRequest).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    }
+    throw response.status;
+  });
+}
+
 document.getElementById("savePreferencesButton").onclick = function saveUserPreferences(){
   userPrefFields.forEach((name)=>{
     var radios = document.getElementsByName(name);
 
     for (var i = 0, length = radios.length; i < length; i++){
       if(radios[i].checked){
-        userPreferences[name] = radios[i].value
+        userPreferences[name] = radios[i].value=="true"?true:false;
       }
       
     }
   });
 
   console.log("Preferencias salvas");
+  setServiceInformation();
+
+  sendNewPreferences();
 }
 
 document.getElementById("loginLink").onclick = function login(){
