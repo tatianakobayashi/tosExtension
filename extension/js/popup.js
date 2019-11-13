@@ -11,10 +11,10 @@ var documentArray = [];
 var userPrefFields = ['dataUsage', 'privateMessages', 'tracking', 'indemnity', 'cookies', 'termsChange', 'contentRemoval'];
 var userPreferences;
 var loggedIn = false;
-var userId = 0;
+var userId;
 var userName = "";
-//var server = 'http://localhost/tcc/tosSite/';
-var server = 'https://tossite.ignys.repl.co';
+var server = 'http://localhost/tcc/tosSite/';
+//var server = 'https://tossite.ignys.repl.co';
 
 // Retorna
 function getServices() { // eslint-disable-line no-unused-vars
@@ -284,7 +284,11 @@ function login(){
 }
 
 function getPrefs(){
-  const requestURL = server + '/getPrefJSON.php?userId='+userId;
+  var path = '/getPrefJSON.php';
+  if(userId){
+    path += '?userId='+userId;
+  }
+  const requestURL = server + path;
 
   var driveRequest = new Request(requestURL, {
     method: 'GET',
