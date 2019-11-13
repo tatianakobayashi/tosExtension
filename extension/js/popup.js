@@ -11,9 +11,10 @@ var documentArray = [];
 var userPrefFields = ['dataUsage', 'privateMessages', 'tracking', 'indemnity', 'cookies', 'termsChange', 'contentRemoval'];
 var userPreferences;
 var loggedIn = false;
-var userId;
+var userId = 0;
 var userName = "";
-var server = 'http://localhost/tcc/tosSite/';//'https://tossite.ignys.repl.co';
+//var server = 'http://localhost/tcc/tosSite/';
+var server = 'https://tossite.ignys.repl.co';
 
 // Retorna
 function getServices() { // eslint-disable-line no-unused-vars
@@ -241,9 +242,13 @@ function loadPreferences(){
   userPrefFields.forEach((name)=>{
     var radios = document.getElementsByName(name);
 
-    for (var i = 0, length = radios.length; i < length; i++){
-      radios[i].checked = userPreferences[name];
+    if(userPreferences[name]){
+      radios[0].checked = true;
     }
+    else{
+      radios[1].checked = true;
+    }
+    
   });
 }
 
@@ -294,14 +299,14 @@ function getPrefs(){
   });
 }
 
-function askSavedPreferences(){
+document.getElementById("loadPrefBtn").onclick = function askSavedPreferences(){
   console.log('asking...');
   getPrefs().then((value)=>{
     console.log(JSON.stringify(value));
     userPreferences = value;
     loadPreferences();
   }, (cause)=>{
-  console.log(cause);
+    console.log(cause);
   });
 }
 
