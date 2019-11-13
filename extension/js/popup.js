@@ -252,7 +252,7 @@ function loadPreferences(){
   });
 }
 
-function getCredentials(email, senha){
+function getCredentials(email, password){
   const requestURL =  server + '/extension-login.php?e='+email+'&p='+password;
 
   var driveRequest = new Request(requestURL, {
@@ -272,15 +272,23 @@ function login(){
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
 
-  getCredentials(email, senha).then((value)=>{
+  getCredentials(email, password).then((value)=>{
     console.log(JSON.stringify(value));
 
     userId = value.userId;
     userName = value.userName;
     loggedIn = true;
+    
+    document.getElementById("userName").innerHTML = userName;
   }, (cause)=>{
     console.log(cause);
   });
+}
+
+
+function logout(){
+  userId = null;
+  userName = "";
 }
 
 function getPrefs(){
