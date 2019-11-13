@@ -203,10 +203,6 @@ function userPreferencesAreEmpty(){
   }
 }
 
-function changeUserPreferences(){
-  var json = JSON.parse('userPreferences.json');
-}
-
 document.getElementById("savePreferencesButton").onclick = function saveUserPreferences(){
   userPrefFields.forEach((name)=>{
     var radios = document.getElementsByName(name);
