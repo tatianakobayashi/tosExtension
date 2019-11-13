@@ -15,9 +15,10 @@ var userId;
 var userName = "";
 var server = 'http://localhost/tcc/tosSite/';
 //var server = 'https://tossite.ignys.repl.co';
+var first = true;
 
 // Retorna
-function getServices() { // eslint-disable-line no-unused-vars
+function getServices() {
   const requestURL = 'https://tosdr.org/api/1/all.json';
 
   const driveRequest = new Request(requestURL, {
@@ -66,26 +67,23 @@ var ratingColorDict = {
 }
 
 var topicDict = {
-  
+  'dataUsage': ["data"],
+  'privateMessages': ["private messages"],
+  'tracking': ["tracking", "tracks", "tracker", "track"],
+  'indemnity': ["indemnify"],
+  'cookies': ["cookies"],
+  'termsChange': ["change its terms", "change in terms"],
+  'contentRemoval': ["content can be removed", "content removal"]
 }
 
 // URL parser 
 function parseUrl(url){
   var parsed_url = url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/);
-  // console.log(parsed_url[0]);
-
   return parsed_url[0];
 }
 
 // get site information, if exists. If not, return null
 function getInfoFromAPI(site){
-  /*
-  if(typeof(all) == 'undefined'){
-    console.log("getAll");
-    getAllFromAPI();
-  }
-  console.log(all);
-  */
   var review = all["tosdr/review/" + site];
 
   if(review){
@@ -124,19 +122,21 @@ function htmlWithClass(htmlTag, cssClass){
   return "<" + htmlTag +" class=\"" + cssClass + "\">";
 }
 
-function setInfoInHTML(data){
+function relevant(topicTitle){
+  var isIt  = false;
+  userPrefFields.forEach((content, index)=>{
+      topicDict[content].forEach((substring, s_index)=>{
+        if(topicTitle.includes(substring) && userPreferences[content]){
+          isIt = true;
+        }
+      });
+  });
+  return isIt;
+}
+
+function setServiceInformation(){
   const divEnd = "</div>";
-  const spanEnd = "</span>";
-
-  document.getElementById("siteName").innerHTML = htmlWithClass("div", "name") + data.name + divEnd;
-  document.getElementById("siteRating").innerHTML = htmlWithClass("div", "rating") + 
-      htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + 
-      htmlWithClass("span",  ratingColorDict[data.rated]) + ratingString(data.rated) + 
-      spanEnd + divEnd;
-
-  getSiteInfo(data);
-  getUrlList(data);
-
+  document.getElementById("topicList").innerHTML = "";
   infoArray.forEach(function(content, index){
       var tagClass = "";
       if(typeof(alertDict[content.point]) == 'undefined'){
@@ -151,9 +151,20 @@ function setInfoInHTML(data){
       // TODO get translation from server
       title = content.title;
 
+      var warning_icon = '<img src="extension/images/warning_small.png"></img>';
+
 
       // var topic = htmlWithClass("ul", "topic alert " + tagClass);
-      var topic = htmlWithClass("div", "topic alert " + tagClass) + title + divEnd;
+      var topic = htmlWithClass("div", "topic alert " + tagClass);
+
+      if(!first){
+        if(relevant(title)){       
+          topic += warning_icon + "  ";
+          console.log(topic);
+        }
+      }
+      
+      topic += title + divEnd;
       // topic += "<li>" +  htmlWithClass("span", "topicPoint "+ content.point) + pointDict[content.point] + spanEnd+ "</li>";
       // topic += "<li>" +  htmlWithClass("span", "topicScore") + content.score + spanEnd+ "</li>";
       //if(content.privacyRelated){
@@ -163,6 +174,23 @@ function setInfoInHTML(data){
       document.getElementById("topicList").innerHTML += topic;
     }
   );
+  first = false;
+}
+
+function setInfoInHTML(data){
+  const divEnd = "</div>";
+  const spanEnd = "</span>";
+
+  document.getElementById("siteName").innerHTML = htmlWithClass("div", "name") + data.name + divEnd;
+  document.getElementById("siteRating").innerHTML = htmlWithClass("div", "rating") + 
+      htmlWithClass("span", "tosdrLabel") + "Classificação: " + spanEnd + 
+      htmlWithClass("span",  ratingColorDict[data.rated]) + ratingString(data.rated) + 
+      spanEnd + divEnd;
+
+  getSiteInfo(data);
+  getUrlList(data);
+
+  setServiceInformation();
 
   var urlList = "";
   documentArray.forEach(function(content, index){
