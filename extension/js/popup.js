@@ -368,6 +368,7 @@ document.getElementById("loadPrefBtn").onclick = function askSavedPreferences(){
     loadPreferences();
   }, (cause)=>{
     console.log(cause);
+    userPreferences = JSON.parse('{ "dataUsage": false, "privateMessages": false, "tracking": false, "indemnity": false, "cookies": false, "termsChange": false, "contentRemoval": false}');
   });
 }
 
