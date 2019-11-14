@@ -14,7 +14,8 @@ var loggedIn = false;
 var userId;
 var userName = "";
 //var server = 'http://localhost/tcc/tosSite/';
-var server = 'https://tossite.ignys.repl.co';
+//var server = 'https://tossite.ignys.repl.co';
+var server = 'http://termsofservicetest.epizy.com/';
 var first = true;
 
 // Retorna
