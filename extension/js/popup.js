@@ -13,8 +13,8 @@ var userPreferences;
 var loggedIn = false;
 var userId;
 var userName = "";
-var server = 'http://localhost/tcc/tosSite/';
-//var server = 'https://tossite.ignys.repl.co';
+//var server = 'http://localhost/tcc/tosSite/';
+var server = 'https://tossite.ignys.repl.co';
 var first = true;
 
 // Retorna
