@@ -151,9 +151,14 @@ function setServiceInformation(){
       // TODO get translation from server
       title = content.title;
 
-      var warning_icon = '<img src="extension/images/warning_small.png"></img>';
+      var warning_icon = '<img src="';
 
-
+      if(chrome){
+        warning_icon += chrome.runtime.getURL('images/warning_small.png');
+      }else{
+        warning_icon += browser.extension.getURL('images/warning_small.png');
+      }
+      warning_icon += '"></img>';
       // var topic = htmlWithClass("ul", "topic alert " + tagClass);
       var topic = htmlWithClass("div", "topic alert " + tagClass);
 
