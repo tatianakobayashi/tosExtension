@@ -1,15 +1,16 @@
 {
-  "manifest_version": 3,
-  "name": "Template Browser Extension",
-  "description": "Template Browser Extension",
+  "manifest_version": 4,
+  "name": "Analisador de Termos de Uso",
+  "description": "Analisador de Termos de Uso",
   "homepage_url": "https://github.com/tatianakobayashi/template-browser-extension",
   "version": "0.0.1",
   "browser_action": {
    "default_popup": "popup.html",
-   "default_title": "Template Browser Extension"
+   "default_title": "Analisador de Termos de Uso"
   },
   "permissions": [
     "tabs", 
-    "https://tosdr.org"
+    "https://tosdr.org",
+    "http://termsofservicetest.epizy.com/"
   ]
 }

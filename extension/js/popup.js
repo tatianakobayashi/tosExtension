@@ -13,9 +13,9 @@ var userPreferences;
 var loggedIn = false;
 var userId;
 var userName = "";
-//var server = 'http://localhost/tcc/tosSite/';
-//var server = 'https://tossite.ignys.repl.co';
-var server = 'http://termsofservicetest.epizy.com';
+var server = 'http://localhost/tcc/tosSite';
+// var server = 'https://tossite.ignys.repl.co';
+// var server = 'http://termsofservicetest.epizy.com';
 var first = true;
 
 // Retorna
@@ -215,7 +215,7 @@ const alertError = (error, message) => {
 
 const addLinkDataFromTab = (tabs) => {
   currentTab = tabs[0]
-  $('#tabTitle').text(currentTab.title);
+  // $('#tabTitle').text(currentTab.title);
   // $('#urlInput').val(currentTab.url);
   
   var url = parseUrl(currentTab.url);
