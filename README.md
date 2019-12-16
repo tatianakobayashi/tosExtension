@@ -4,7 +4,7 @@
 
 - Open your terminal
 - cd to a directory where you want to save this
-- run: `git clone git@github.com:ryandav/template-browser-extension.git`
+- run: `git clone git@github.com:tatianakobayashi/tosExtension.git`
 - Then open the browser you wish to use it in and follow the below instructions
 
 #### Chrome
